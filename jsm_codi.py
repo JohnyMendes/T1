@@ -125,7 +125,7 @@ plt.xlabel('Index k')
 plt.ylabel('$\phi_x[k]$')             
 plt.show()    
 
-# 3. Representar el mòdul de la Transformada de Fourier en dB i l'eix d'abscisses en 0 a fm/2 en Hz
+# 3. Representar el mòdul de la Transformada de Fourier en dB i l'eix d'abscisses en 0 a fm/2 en HzRepresentar el mòdul de la Transformada de Fourier en dB i l'eix d'abscisses en 0 a fm/2 en Hz
 T= 2.5                               # Durada de T segons
 fm=8000                              # Freqüència de mostratge en Hz
 fx=440                               # Freqüència de la sinusoide
@@ -135,7 +135,7 @@ L = int(fm * T)                      # Nombre de mostres del senyal digital
 Tm=1/fm                              # Període de mostratge
 t=Tm*np.arange(L)                    # Vector amb els valors de la variable temporal, de 0 a T
 x = A * np.cos(2 * pi * fx * t)      # Senyal sinusoidal
-sf.write('so_f4k.wav', x, fm)
+sf.write('so_prueba.wav', x, fm)
 
 Tx=1/fx                                   # Període del senyal
 Ls=int(fm*5*Tx)
@@ -155,9 +155,11 @@ X=fft(x[0 : Ls], N)           # Càlcul de la transformada de 5 períodes de la 
 
 k=np.arange(N)                        # Vector amb els valors 0≤  k<N
 
+
+moduldb = 20 * math.log10(abs(X)/max(abs(X)))
 plt.figure(1)                         # Nova figura
-plt.subplot(211)                      # Espai per representar el mòdul
-plt.plot(k,abs(X))                    # Representació del mòdul de la transformada
+plt.subplot(fm/2)                      # Espai per representar el mòdul
+plt.plot(k,moduldb)                    # Representació del mòdul de la transformada
 plt.title(f'Transformada del senyal de Ls={Ls} mostres amb DFT de N={N}')   # Etiqueta del títol
 plt.ylabel('|X[k]|')                  # Etiqueta de mòdul
 plt.subplot(212)                      # Espai per representar la fase
@@ -165,3 +167,14 @@ plt.plot(k,np.unwrap(np.angle(X)))    # Representació de la fase de la transfor
 plt.xlabel('Index k')                 # Etiqueta de l'eix d'abscisses 
 plt.ylabel('$\phi_x[k]$')             # Etiqueta de la fase en Latex
 plt.show()
+
+
+# 4. Llegir un fitxer d'audio i comprovar: 
+# Freqüència de mostratge.
+# Nombre de mostres de senyal.
+# Tria un segment de senyal de 25ms i insereix una gráfica amb la seva evolució temporal.
+# Representa la seva transformada en dB en funció de la freqüència, en el marge 
+# Quines son les freqüències més importants del segment triat?
+
+x_r, fm = sf.read('so_f4k.wav')
+fm 
