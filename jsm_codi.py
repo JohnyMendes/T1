@@ -176,5 +176,22 @@ plt.show()
 # Representa la seva transformada en dB en funció de la freqüència, en el marge 
 # Quines son les freqüències més importants del segment triat?
 
-x_r, fm = sf.read('so_f4k.wav')
-fm 
+x_r, fm = sf.read('so_prueba.wav')
+# frequencia de mostratge
+freq_mostratge = fm
+# durada del .wav
+T = 2.5
+# nombre de mostres de la senyal
+num_mostres = int(freq_mostratge * T)  
+# segment de 25ms 
+Ts = 0.25
+Ls = int(freq_mostratge * Ts)
+# Vector amb els valors de la variable temporal, de 0 a 25ms
+Tm = 1/freq_mostratge
+t=Tm*np.arange(num_mostres)       
+#grafica amb la evolucio temporal 
+plt.figure(0)                             # Nova figura
+plt.plot(t[0:Ls], x_r[0:Ls])                # Representació del senyal en funció del temps
+plt.xlabel('t en segons')                 # Etiqueta eix temporal
+plt.title('25ms de la senyal')            # Títol del gràfic
+plt.show()    

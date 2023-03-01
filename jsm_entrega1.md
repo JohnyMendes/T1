@@ -20,9 +20,13 @@ Representació del mòdul i la fase, en funció de la posició de cada valor:
 
 # 3. Representar el mòdul de la Transformada de Fourier en dB i l'eix d'abscisses en 0 a fm/2 en Hz
 
-# moduldb = 20 * math.log10(abs(X)/max(abs(X)))
+moduldb = 20 * math.log10(abs(X)/max(abs(X)))
 
 
-# 4. 
+# 4. Llegir un fitxer d'audio
 
 x_r, fm = sf.read('so_f4k.wav')
+
+ Evolució temporal d'un segment de 25ms del senyal: 
+
+ <img src="img/25ms senyal.png" width="480" align="center">
