@@ -195,3 +195,4 @@ plt.plot(t[0:Ls], x_r[0:Ls])                # Representació del senyal en funci
 plt.xlabel('t en segons')                 # Etiqueta eix temporal
 plt.title('25ms de la senyal')            # Títol del gràfic
 plt.show()    
+ 
