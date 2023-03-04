@@ -155,8 +155,9 @@ X=fft(x[0 : Ls], N)           # Càlcul de la transformada de 5 períodes de la 
 
 k=np.arange(N)                        # Vector amb els valors 0≤  k<N
 
+modul = abs(X) 
 
-moduldb = 20 * math.log10(abs(X)/max(abs(X)))
+moduldb = 20 * np.log10(modul/max(modul))
 plt.figure(1)                         # Nova figura
 plt.subplot(fm/2)                      # Espai per representar el mòdul
 plt.plot(k,moduldb)                    # Representació del mòdul de la transformada
@@ -176,23 +177,54 @@ plt.show()
 # Representa la seva transformada en dB en funció de la freqüència, en el marge 
 # Quines son les freqüències més importants del segment triat?
 
+import numpy as np 
+import soundfile as sf
+import matplotlib.pyplot as plt 
+
+# fitxer d'àudio que vull llegir 
+fitxer = 'so_prueba.wav'
 x_r, fm = sf.read('so_prueba.wav')
-# frequencia de mostratge
-freq_mostratge = fm
-# durada del .wav
-T = 2.5
-# nombre de mostres de la senyal
-num_mostres = int(freq_mostratge * T)  
-# segment de 25ms 
-Ts = 0.25
-Ls = int(freq_mostratge * Ts)
-# Vector amb els valors de la variable temporal, de 0 a 25ms
-Tm = 1/freq_mostratge
-t=Tm*np.arange(num_mostres)       
-#grafica amb la evolucio temporal 
-plt.figure(0)                             # Nova figura
-plt.plot(t[0:Ls], x_r[0:Ls])                # Representació del senyal en funció del temps
-plt.xlabel('t en segons')                 # Etiqueta eix temporal
-plt.title('25ms de la senyal')            # Títol del gràfic
-plt.show()    
- 
+
+# Freqüència de mostratge:
+print('Freqüència de mostreig:', fm)
+
+# Nombre de mostres de senyal:
+print('Nombre de mostres de senyal:', len(x_r))
+
+# segmente de senyal de 25ms 
+inici_t = 0    # segons
+final_t = 0.025  # segons
+inici = int(inici_t * fm)
+final = int(final_t * fm)
+segment = x_r[inici:final]
+t = np.linspace(inici_t, final_t, len(segment))
+
+# Visualitzar el segment 
+plt.figure()
+plt.plot(t, segment)
+plt.xlabel('Temps (s)')
+plt.ylabel('Amplitud')
+plt.title('Segment de senyal de 25ms')
+plt.show()
+
+# Calcula la transformada de Fourier del segment de senyal i converteix a dB
+freq_eix = np.fft.fftfreq(len(segment)) * fm
+fft = np.abs(np.fft.fft(segment))
+fft_db = 20 * np.log10(fft)
+
+# Visualitzar la transformada en dB en funció de la freqüència
+plt.figure()
+plt.plot(freq_eix, fft_db)
+plt.xlabel('Freqüència (Hz)')
+plt.ylabel('Amplitud (dB)')
+plt.title('Transformada de Fourier del segment de senyal')
+plt.xlim(0, fm/2)
+plt.show()
+
+# freqüències més importants del segment de senyal
+max_indices = np.argsort(fft)[::-1][:5] 
+max_frequencies = freq_eix[max_indices]
+print('Les freqüències més importants del segment de senyal són:', max_frequencies)
+
+
+
